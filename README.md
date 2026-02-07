@@ -1,53 +1,61 @@
-# GMSK Processor Project (Gooty Mohammed Sameer Khan)
+# GMSK-P1: 32-bit RISC-V Processor Core
 
-## 🚀 Vision
-To build a custom, open-source System-on-Chip (SoC) integration for **Sameer OS** and **Sameer AI**. 
-The goal is to create silicon that is optimized for our specific OS and AI workloads, moving beyond generic hardware.
+**GMSK-P1** is a custom-built 32-bit RISC-V processor core designed from scratch in Verilog. It serves as the foundational prototype for the **Sameer OS / Sameer AI Silicon Integration** initiative. This project implements a functional 5-stage-like architecture capable of executing basic RISC-V arithmetic instructions.
 
-## 🧠 The Strategy: Hybrid Approach (Learn -> Adopt)
-You asked: *"Are we building from scratch or using open source?"*
-**The Answer:** We are doing **BOTH**, in specific stages.
+## 🚀 Features
+*   **Architecture:** 32-bit RISC-V (RV32I Subset).
+*   **Core Components:**
+    *   **ALU:** 32-bit Arithmetic Logic Unit (ADD, SUB, AND, OR).
+    *   **Register File:** 32 x 32-bit Registers (`x0`-`x31`) with dual-read/single-write ports.
+    *   **Program Counter (PC):** 32-bit instruction pointer.
+    *   **Instruction Memory:** Embedded ROM for program storage.
+*   **Instruction Set Support:**
+    *   R-Type: `ADD`
+    *   I-Type: `ADDI`
+*   **Simulation:** Fully verifiable using **Icarus Verilog** and **GTKWave**.
 
-1.  **GMSK-P1 (Current Phase):** We build a tiny processor **from scratch**.
-    *   *Why?* To understand *how* it works. If we don't know how an ALU works, we can't fix the open-source one later.
-    *   *Analogy:* Learning to change a tire before buying a Ferrari.
+## 📂 Directory Structure
+```text
+GMSK_Processor/
+├── src/                  # Source Code (Verilog)
+│   ├── gmsk_p1.v         # Top-Level Core
+│   ├── alu.v             # Arithmetic Logic Unit
+│   ├── register_file.v   # Register File
+│   ├── program_counter.v # PC Logic
+│   └── instruction_memory.v
+├── tests/                # Testbenches
+│   ├── gmsk_p1_tb.v      # Full Core Testbench
+│   └── [unit_tests]      # Component Testbenches
+├── Makefile              # Build Automation
+└── README.md             # Project Documentation
+```
 
-2.  **GMSK-V1 (Production Phase):** We will download an **Open Source RISC-V Core** (like `CV32E40P` from OpenHW Group).
-    *   *Why?* It is verified, fast, and bug-free.
-    *   *Our Job:* We take that core and add our "Sameer AI" accelerators to it.
+## 🛠️ Getting Started
 
-## 📅 Roadmap
-*   **GMSK-P1 (Prototype 1):** 
-    *   **Goal:** A simple 32-bit RISC-V Core (RV32I).
-    *   **Features:** Basic Integer instructions, fetching from memory, executing simple C programs.
-    *   **Platform:** Simulation only (Verilator/Icarus).
-*   **GMSK-P2 (Prototype 2):**
-    *   **Goal:** Adding "Un-core" components.
-    *   **Features:** UART (Serial Console), GPIO (LEDs), maybe a simple Timer.
-    *   **Platform:** FPGA (Field Programmable Gate Array) if available, or advanced simulation.
-*   **GMSK-V1 (Version 1 - Official):**
-    *   **Goal:** The MVP (Minimum Viable Processor).
-    *   **Features:** Pipeline optimizations, Basic AI Accelerator (Matrix Multiplication Unit), Booting a tiny OS Kernel.
+### Prerequisites
+*   **Icarus Verilog** (`iverilog`)
+*   **GTKWave** (for waveform viewing)
 
-## 🧠 Architecture: RISC-V
-We are choosing **RISC-V** (Reduced Instruction Set Computer - V) because:
-1.  **Open Source:** No licensing fees (unlike ARM).
-2.  **Extensible:** We can add our own "Sameer AI" instructions.
-3.  **Community:** Massive ecosystem of tools and compilers.
+### Building and Running
+To simulate the full processor core:
 
-## 🛠️ The Digital Workbench (Tools)
-We are using professional-grade open-source tools installed on macOS:
-*   **Icarus Verilog (`iverilog`):** Compiles our hardware code (Verilog) into a simulation.
-*   **GTKWave (`gtkwave`):** "Oscilloscope" for code. Logic Analyzer to see 1s and 0s moving in the chip.
-*   **Verilator:** Fast simulation for running software on our chip.
-*   **QEMU:** Emulates the full system to test the OS before the chip is ready.
+```bash
+make core
+```
 
-## 📂 Structure
-*   `src/`: The source code of the processor (Verilog/SystemVerilog).
-*   `docs/`: Datasheets, Architecture Diagrams, and Notes.
-*   `tests/`: Verification programs to ensure the processor calculates `1+1=2` correctly.
-*   `software/`: The C/Assembly code we will run on the GMSK processor.
+To view the waveforms:
 
----
-**Maintained by:** Gooty Mohammed Sameer Khan
-**Status:** Initialization
+```bash
+make wave
+```
+
+## 🧠 Architecture Overview
+The GMSK-P1 follows a simplified single-cycle architecture:
+1.  **Fetch:** The **Program Counter** retrieves the next instruction from **Instruction Memory**.
+2.  **Decode:** The instruction is split into Opcode, Register Identifiers (rs1, rs2, rd), and Immediate values.
+3.  **Execute:** The **ALU** performs the operation (e.g., `x1 + 1`).
+4.  **Writeback:** The result is written back to the **Register File**.
+
+## 📜 License
+This project is part of the **Sameer AI Silicon Initiative**.
+Copyright © 2026 Gooty Mohammed Sameer Khan.
