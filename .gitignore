@@ -1,0 +1,18 @@
+# User Documentation (Private)
+LAB_NOTEBOOK.md
+LEARNING_JOURNEY.md
+Master_Developers_Notes.md
+MASTER_DEVELOPER_NOTES.md
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Build Artifacts
+*.vcd
+*.vvp
+*.log
+
+# Dependencies
+venv/
+__pycache__/
